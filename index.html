@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Master Adventure - Kelas X</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --success: #27ae60;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            width: 100%;
+            padding: 1rem 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .container {
+            max-width: 800px;
+            width: 90%;
+            background: white;
+            padding: 2rem;
+            margin-top: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .game-section {
+            display: none;
+        }
+
+        .active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .code-box {
+            background: #282a36;
+            color: #f8f8f2;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.6;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        .drop-zone {
+            display: inline-block;
+            min-width: 80px;
+            height: 25px;
+            background: #44475a;
+            border: 1px dashed #bd93f9;
+            vertical-align: middle;
+            margin: 0 5px;
+            border-radius: 4px;
+            text-align: center;
+            color: #50fa7b;
+        }
+
+        .options-container {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .draggable {
+            background: var(--secondary);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: grab;
+            user-select: none;
+            transition: transform 0.2s;
+        }
+
+        .draggable:hover {
+            transform: scale(1.05);
+            background: #2980b9;
+        }
+
+        button {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background-color: #219150;
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        #progress-fill {
+            height: 100%;
+            background: var(--secondary);
+            width: 0%;
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body>
+
+<audio id="audio-correct">
+    <source src="assets/benar.mp3" type="audio/mpeg">
+    <source src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="audio-wrong">
+    <source src="assets/salah.mp3" type="audio/mpeg">
+    <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
+</audio>
+
+<header>
+    <h1>🚀 Review C++</h1>
+    <p>Materi: iostream, cin, cout, endl</p>
+</header>
+
+<div class="container">
+    <div class="progress-bar">
+        <div id="progress-fill"></div>
+    </div>
+
+    <div id="level1" class="game-section active">
+        <h2>Level 1: Struktur Dasar</h2>
+        <p>Lengkapi program di bawah ini agar bisa berjalan!</p>
+        
+        <div class="code-box">
+            #include &lt;<span class="drop-zone" id="drop1" ondrop="drop(event)" ondragover="allowDrop(event)"></span>&gt; <br>
+            using namespace std;<br><br>
+            int main() {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="drop-zone" id="drop2" ondrop="drop(event)" ondragover="allowDrop(event)"></span> &lt;&lt; "Halo Dunia!" &lt;&lt; <span class="drop-zone" id="drop3" ondrop="drop(event)" ondragover="allowDrop(event)"></span>;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>
+            }
+        </div>
+
+        <div class="options-container">
+            <div class="draggable" draggable="true" ondragstart="drag(event)" id="opt1">iostream</div>
+            <div class="draggable" draggable="true" ondragstart="drag(event)" id="opt2">cout</div>
+            <div class="draggable" draggable="true" ondragstart="drag(event)" id="opt3">endl</div>
+            <div class="draggable" draggable="true" ondragstart="drag(event)" id="opt4">cin</div>
+        </div>
+        
+        <button onclick="checkLevel1()">Cek Jawaban</button>
+        <div id="feedback1" class="feedback"></div>
+    </div>
+
+    <div id="level2" class="game-section">
+        <h2>Level 2: Memasukkan Data</h2>
+        <p>Gunakan perintah yang tepat untuk menerima input dari user!</p>
+        
+        <div class="code-box">
+            int umur;<br>
+            cout << "Masukkan umur kamu: ";<br>
+            <span class="drop-zone" id="drop4" ondrop="drop(event)" ondragover="allowDrop(event)"></span> >> umur;<br>
+            cout << "Umur kamu adalah " << umur << endl;
+        </div>
+
+        <div class="options-container">
+            <div class="draggable" draggable="true" ondragstart="drag(event)" id="opt5">cin</div>
+            <div class="draggable" draggable="true" ondragstart="drag(event)" id="opt6">cout</div>
+        </div>
+
+        <button onclick="checkLevel2()">Cek Jawaban</button>
+        <div id="feedback2" class="feedback"></div>
+    </div>
+
+    <div id="level3" class="game-section">
+        <h2>Level 3: Pengetahuan C++</h2>
+        <p>Jawab pertanyaan terakhir!</p>
+        
+        <div style="margin-bottom: 1.5rem;">
+            <p>1. Simbol apa yang digunakan setelah <b>cout</b>?</p>
+            <input type="text" id="ans1" placeholder="Isi di sini...">
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <p>2. Library apa untuk input-output?</p>
+            <input type="text" id="ans2" placeholder="Isi di sini...">
+        </div>
+
+        <button onclick="checkLevel3()">Selesaikan Misi</button>
+        <div id="feedback3" class="feedback"></div>
+    </div>
+
+    <div id="finish" class="game-section">
+        <h2 style="text-align: center; color: var(--success);">🎉 Selamat! Kamu Lulus!</h2>
+        <div style="text-align: center;">
+            <button onclick="location.reload()">Main Lagi</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Audio Control
+    const soundCorrect = document.getElementById('audio-correct');
+    const soundWrong = document.getElementById('audio-wrong');
+
+    function playCorrect() {
+        soundCorrect.currentTime = 0;
+        soundCorrect.play();
+    }
+
+    function playWrong() {
+        soundWrong.currentTime = 0;
+        soundWrong.play();
+    }
+
+    // Drag and Drop Logic
+    function allowDrop(ev) { ev.preventDefault(); }
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+        ev.dataTransfer.setData("val", ev.target.innerText);
+    }
+    function drop(ev) {
+        ev.preventDefault();
+        var val = ev.dataTransfer.getData("val");
+        if (ev.target.classList.contains('drop-zone')) {
+            ev.target.innerText = val;
+        }
+    }
+
+    function updateProgress(percent) {
+        document.getElementById('progress-fill').style.width = percent + '%';
+    }
+
+    function checkLevel1() {
+        const d1 = document.getElementById('drop1').innerText;
+        const d2 = document.getElementById('drop2').innerText;
+        const d3 = document.getElementById('drop3').innerText;
+        const fb = document.getElementById('feedback1');
+
+        if(d1 === 'iostream' && d2 === 'cout' && d3 === 'endl') {
+            playCorrect();
+            fb.style.display = 'block';
+            fb.style.backgroundColor = '#d4edda';
+            fb.innerText = "Benar! Menuju level 2...";
+            updateProgress(33);
+            setTimeout(() => {
+                document.getElementById('level1').classList.remove('active');
+                document.getElementById('level2').classList.add('active');
+            }, 1500);
+        } else {
+            playWrong();
+            fb.style.display = 'block';
+            fb.style.backgroundColor = '#f8d7da';
+            fb.innerText = "Ops! Coba cek lagi posisinya.";
+        }
+    }
+
+    function checkLevel2() {
+        const d4 = document.getElementById('drop4').innerText;
+        const fb = document.getElementById('feedback2');
+
+        if(d4 === 'cin') {
+            playCorrect();
+            fb.style.display = 'block';
+            fb.style.backgroundColor = '#d4edda';
+            fb.innerText = "Hebat! cin digunakan untuk input data.";
+            updateProgress(66);
+            setTimeout(() => {
+                document.getElementById('level2').classList.remove('active');
+                document.getElementById('level3').classList.add('active');
+            }, 1500);
+        } else {
+            playWrong();
+            fb.style.display = 'block';
+            fb.style.backgroundColor = '#f8d7da';
+            fb.innerText = "Salah. Ingat, cout untuk keluar, cin untuk masuk.";
+        }
+    }
+
+    function checkLevel3() {
+        const a1 = document.getElementById('ans1').value.trim();
+        const a2 = document.getElementById('ans2').value.trim().toLowerCase();
+
+        if(a1 === '<<' && (a2 === 'iostream')) {
+            playCorrect();
+            updateProgress(100);
+            document.getElementById('level3').classList.remove('active');
+            document.getElementById('finish').classList.add('active');
+        } else {
+            playWrong();
+            document.getElementById('feedback3').style.display = 'block';
+            document.getElementById('feedback3').style.backgroundColor = '#f8d7da';
+            document.getElementById('feedback3').innerText = "Coba periksa simbol atau nama library-nya!";
+        }
+    }
+</script>
+</body>
+</html>
